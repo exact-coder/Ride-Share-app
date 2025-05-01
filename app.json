@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ride_share_app",
-    "slug": "ride_share_app",
+    "name": "Ride Share",
+    "slug": "ride_share",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
