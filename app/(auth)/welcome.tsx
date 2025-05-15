@@ -9,6 +9,7 @@ import CustomButton from '@/components/CustomButton';
 const Onboarding = () => {
     const swiperRef = useRef<Swiper>(null);
     const [activeIndex, setActiveIndex] = useState(0);
+    const isLastSlide = activeIndex === onboarding.length - 1;
   return (
     <SafeAreaView className='flex h-full items-center justify-between bg-white'>
       <TouchableOpacity onPress={() => {router.replace("/(auth)/sign-up")}} className='w-full flex justify-end items-end p-5'>
@@ -46,8 +47,9 @@ const Onboarding = () => {
       </Swiper>
 
       <CustomButton 
-        title={"Next"}
+        title={isLastSlide ? "Get Started" : "Next"}
         className={"w-11/12 mt-10"}
+        onPress={() => isLastSlide ? router.replace("/(auth)/sign-up") : swiperRef.current?.scrollBy(1)}
       />
     </SafeAreaView>
   )
@@ -55,4 +57,3 @@ const Onboarding = () => {
 
 export default Onboarding;
 
-// Your doing lengeth-1.09
