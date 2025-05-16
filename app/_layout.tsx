@@ -6,6 +6,9 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 import "../global.css";
+import { ClerkProvider } from '@clerk/clerk-expo';
+import { tokenCache } from '@clerk/clerk-expo/token-cache'
+import { Slot } from 'expo-router'
 
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -33,15 +36,18 @@ export default function RootLayout() {
   }
 
   return (
-      <>
+      <ClerkProvider tokenCache={tokenCache}>
+      <Slot />
         <StatusBar hidden={true}/>
-        <Stack>
+        {/* <Stack>
           <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen name="(root)" options={{ headerShown: false }} />
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
           <Stack.Screen name="+not-found" />
         </Stack>
-        <StatusBar style="auto" />
-      </>
+        <StatusBar style="auto" /> */}
+      </ClerkProvider>
   );
 }
+
+// Your doing lengeth-1.43
