@@ -3,18 +3,43 @@ import React, { useState } from 'react'
 import { icons, images } from '@/constants';
 import InputField from '@/components/InputField';
 import CustomButton from '@/components/CustomButton';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import OAuth from '@/components/OAuth';
+import { useSignIn } from '@clerk/clerk-expo';
 
 const SignIn = () => {
   const [form, setForm] = useState({
     email: "",
     password: "",
   })
+  const { signIn, setActive, isLoaded } = useSignIn();
+  const router = useRouter()
 
+  // Handle the submission of the sign-in form
   const onSignInPress = async () => {
-    Alert.alert("You press the SignIn Button")
-  };
+    if (!isLoaded) return
+
+    // Start the sign-in process using the email and password provided
+    try {
+      const signInAttempt = await signIn.create({
+        identifier: form.email,
+        password: form.password,
+      })
+
+      // If sign-in process is complete, set the created session as active
+      // and redirect the user
+      if (signInAttempt.status === 'complete') {
+        await setActive({ session: signInAttempt.createdSessionId })
+        router.replace('/(root)/(tabs)/home')
+      } else {
+        // If the status isn't complete, check why. User might need to
+        // complete further steps.
+        console.error(JSON.stringify(signInAttempt, null, 2))
+      }
+    } catch (err) {
+      Alert.alert("Error", (err as any)?.errors?.[0]?.longMessage);
+    }
+  }
   return (
     <ScrollView className='flex-1 bg-white'>
       <View className='flex-1 bg-white'>
